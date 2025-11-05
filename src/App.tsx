@@ -3,6 +3,7 @@ import "./styles/global.css"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import {
     Login,
+    NoticeWrite,
     Notifications,
     ReportDetail,
     Reports,
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/report/:id" element={<ReportDetail />} />
                 <Route path="/notifications" element={<Notifications />} />
+                <Route path="/notice/write" element={<NoticeWrite />} />
             </Routes>
         </BrowserRouter>
     )

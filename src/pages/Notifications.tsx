@@ -50,6 +50,7 @@ export function Notifications() {
     )
 }
 
+// ✅ styled-components
 const Container = styled.div`
     max-width: 900px;
     width: 100%;
@@ -77,7 +78,7 @@ const Header = styled.div`
 `
 
 const Title = styled.h2`
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     color: #222;
 
