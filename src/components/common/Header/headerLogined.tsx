@@ -5,79 +5,103 @@ import { useNavigate } from "react-router-dom"
 export function HeaderLogined() {
     const navigate = useNavigate()
 
-    const Report = () => {
-        navigate("/report")
-    }
-
-    const Notification = () => {
-        navigate("/notification")
-    }
-
     return (
         <Container>
-            <ItemWrapper>
-                <LeftWrapper>
-                    <NavButton onClick={Report}>신고 확인</NavButton>
-                    <NavButton onClick={Notification}>공지</NavButton>
-                </LeftWrapper>
-                <RightWrapper>
-                    <NavButton>
-                        <img src={Logo} width={100} />
+            <Wrapper>
+                <Left>
+                    <NavButton onClick={() => navigate("/report")}>
+                        신고 확인
                     </NavButton>
-                </RightWrapper>
-            </ItemWrapper>
+                    <NavButton onClick={() => navigate("/notification")}>
+                        공지
+                    </NavButton>
+                </Left>
+                <Right>
+                    <LogoButton>
+                        <img src={Logo} width={100} alt="로고" />
+                    </LogoButton>
+                </Right>
+            </Wrapper>
         </Container>
     )
 }
 
-const Container = styled.div`
+const Container = styled.header`
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 60px;
     background: white;
     border-bottom: 1px solid #eeeeee;
-    margin: 0;
-    padding: 0;
+    z-index: 1000;
 `
 
-const ItemWrapper = styled.div`
-    width: 1200px;
+const Wrapper = styled.div`
+    max-width: 1200px;
+    width: 100%;
     height: 60px;
     margin: 0 auto;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 768px) {
+        padding: 0 12px;
+    }
 `
 
-const LeftWrapper = styled.div`
-    width: max-content;
-    height: 60px;
+const Left = styled.div`
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 32px;
-    float: left;
+    gap: 24px;
+
+    @media (max-width: 500px) {
+        gap: 12px;
+    }
+`
+
+const Right = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    @media (max-width: 500px) {
+        gap: 12px;
+    }
 `
 
 const NavButton = styled.button`
-    display: flex;
-    justify-content: center;
-    width: max-content;
     cursor: pointer;
-    border: none;
     background: none;
-    padding: 0;
-    margin: 0;
+    border: none;
+    font-size: 16px;
+    color: #333;
+
+    &:hover {
+        color: #1860f0;
+    }
+
+    @media (max-width: 500px) {
+        font-size: 14px;
+    }
 `
 
-const RightWrapper = styled.div`
-    width: max-content;
-    height: 60px;
+const LogoButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 32px;
-    float: right;
 
-    #profile {
-        font-size: 30px;
-        background: #ececec;
-        border-radius: 50%;
+    img {
+        width: 80px;
+
+        @media (max-width: 500px) {
+            width: 60px;
+        }
     }
 `
