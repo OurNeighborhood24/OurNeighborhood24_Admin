@@ -1,20 +1,33 @@
-// ✅ Reports.tsx
 import React, { useState } from "react"
 import styled from "styled-components"
 import { ReportItem, Report } from "../components/report/ReportItem"
 import { Pagination } from "../components/common/Pagination"
 import { Dropdown } from "../components/common/Dropdown"
+import { useNavigate } from "react-router-dom"
 
 export const Reports: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState("전체")
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 10
+    const itemsPerPage = 15
+    const navigate = useNavigate()
 
     const categories = [
         "전체",
+        "가로정비",
+        "공원녹지",
         "교통-불법주차",
-        "환경-소음",
-        "안전-시설물",
+        "교통-장애인주차구역위반",
+        "교통-거주자우선주차위반",
+        "교통-기타",
+        "도로",
+        "소방안전",
+        "청소-쓰레기무단투기",
+        "청소-기타",
+        "치수방재",
+        "환경",
+        "보건",
+        "주택",
+        "범죄",
         "기타",
     ]
 
@@ -68,7 +81,11 @@ export const Reports: React.FC = () => {
 
             <List>
                 {paginatedReports.map((r) => (
-                    <ReportItem key={r.id} report={r} />
+                    <ReportItem
+                        key={r.id}
+                        report={r}
+                        onClick={() => navigate(`/report/${r.id}`)} // ✅ 이동 로직
+                    />
                 ))}
             </List>
 

@@ -11,8 +11,13 @@ export interface Report {
     status: ReportStatus
 }
 
-export const ReportItem: React.FC<{ report: Report }> = ({ report }) => (
-    <Item>
+interface ReportItemProps {
+    report: Report
+    onClick?: () => void
+}
+
+export const ReportItem: React.FC<ReportItemProps> = ({ report, onClick }) => (
+    <Item onClick={onClick}>
         <MainInfo>
             <Title>{report.title}</Title>
             <Date>{report.date}</Date>
@@ -28,9 +33,10 @@ const Item = styled.div`
     display: flex;
     flex-direction: column;
     padding: 12px 0;
-    border-bottom: 1px solid #f2f2f2;
+    border-top: 1px solid #f2f2f2;
     width: 100%;
     overflow-x: hidden;
+    cursor: pointer;
 
     @media (min-width: 768px) {
         flex-direction: row;

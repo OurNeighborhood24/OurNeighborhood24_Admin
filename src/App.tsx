@@ -1,7 +1,7 @@
 import React from "react"
 import "./styles/global.css"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Login, Reports, Signup, Start } from "./pages"
+import { Login, ReportDetail, Reports, Signup, Start } from "./pages"
 import { Header } from "./components/common"
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/reports" element={<Reports />} />
+                <Route path="/report/:id" element={<ReportDetail />} />
             </Routes>
         </BrowserRouter>
     )
