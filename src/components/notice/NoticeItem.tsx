@@ -1,7 +1,5 @@
-// ✅ components/notice/NoticeItem.tsx
 import React from "react"
 import styled from "styled-components"
-import { Text } from "../common"
 
 export interface Notice {
     id: number
