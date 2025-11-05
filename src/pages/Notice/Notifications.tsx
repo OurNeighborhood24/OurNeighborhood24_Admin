@@ -1,7 +1,7 @@
 import { useState } from "react"
 import styled from "styled-components"
-import { NoticeItem, Notice } from "../components/notice/NoticeItem"
-import { Pagination } from "../components/common/Pagination"
+import { NoticeItem, Notice } from "../../components/notice/NoticeItem"
+import { Pagination } from "../../components/common/Pagination"
 import { useNavigate } from "react-router-dom"
 
 export function Notifications() {

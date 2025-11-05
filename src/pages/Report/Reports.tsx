@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { ReportItem, Report } from "../components/report/ReportItem"
-import { Pagination } from "../components/common/Pagination"
-import { Dropdown } from "../components/common/Dropdown"
+import { ReportItem, Report } from "../../components/report/ReportItem"
+import { Pagination } from "../../components/common/Pagination"
+import { Dropdown } from "../../components/common/Dropdown"
 import { useNavigate } from "react-router-dom"
 
 export const Reports: React.FC = () => {

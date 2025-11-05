@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import { Text } from "../components/common/Text"
-import { colors } from "../styles/colors"
+import { Text } from "../../components/common/Text"
+import { colors } from "../../styles/colors"
 
 export function NoticeDetail() {
     const dummyNotices = Array.from({ length: 47 }, (_, i) => ({

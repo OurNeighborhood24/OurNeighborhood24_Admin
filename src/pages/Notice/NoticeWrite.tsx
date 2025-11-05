@@ -1,9 +1,9 @@
 import { useState } from "react"
 import styled from "styled-components"
-import { Input } from "../components/common/Input"
-import { Button } from "../components/common/Button"
-import { colors } from "../styles/colors"
-import { Text } from "../components/common/Text"
+import { Input } from "../../components/common/Input"
+import { Button } from "../../components/common/Button"
+import { colors } from "../../styles/colors"
+import { Text } from "../../components/common/Text"
 
 export function NoticeWrite() {
     const [title, setTitle] = useState("")
