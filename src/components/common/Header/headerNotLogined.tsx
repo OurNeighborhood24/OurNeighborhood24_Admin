@@ -9,7 +9,7 @@ export function HeaderNotLogined() {
         <Container>
             <Wrapper>
                 <Left>
-                    <LogoButton onClick={() => navigate("/")}>
+                    <LogoButton>
                         <img src={Logo} alt="로고" />
                     </LogoButton>
                 </Left>
@@ -110,7 +110,6 @@ const LoginButton = styled.button`
 const LogoButton = styled.button`
     background: none;
     border: none;
-    cursor: pointer;
     padding: 0;
 
     img {

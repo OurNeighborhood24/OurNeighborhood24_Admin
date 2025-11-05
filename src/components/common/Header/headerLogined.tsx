@@ -12,12 +12,12 @@ export function HeaderLogined() {
                     <NavButton onClick={() => navigate("/reports")}>
                         신고 확인
                     </NavButton>
-                    <NavButton onClick={() => navigate("/notifications")}>
+                    <NavButton onClick={() => navigate("/notices")}>
                         공지
                     </NavButton>
                 </Left>
                 <Right>
-                    <LogoButton onClick={() => navigate("/")}>
+                    <LogoButton>
                         <img src={Logo} alt="로고" />
                     </LogoButton>
                 </Right>
@@ -92,7 +92,6 @@ const NavButton = styled.button`
 const LogoButton = styled.button`
     background: none;
     border: none;
-    cursor: pointer;
     padding: 0;
 
     img {
