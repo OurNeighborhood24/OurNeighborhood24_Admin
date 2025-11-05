@@ -1,3 +1,4 @@
+// ✅ HeaderNotLogined.tsx
 import styled from "styled-components"
 import Logo from "../../../assets/Img/Logo.png"
 import { useNavigate } from "react-router-dom"
@@ -10,7 +11,7 @@ export function HeaderNotLogined() {
             <Wrapper>
                 <Left>
                     <LogoButton onClick={() => navigate("/")}>
-                        <img src={Logo} width={100} alt="로고" />
+                        <img src={Logo} alt="로고" />
                     </LogoButton>
                 </Left>
                 <Right>
@@ -31,52 +32,51 @@ const Container = styled.header`
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px;
     background: white;
     border-bottom: 1px solid #eeeeee;
     z-index: 1000;
+    overflow-x: hidden;
 `
 
 const Wrapper = styled.div`
     max-width: 1200px;
-    width: 100%;
-    height: 60px;
     margin: 0 auto;
+    height: 60px;
+    width: 100%;
     padding: 0 20px;
-
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
 
     @media (max-width: 768px) {
-        padding: 0 12px;
+        flex-wrap: wrap;
+        height: auto;
+        padding: 8px 12px;
+        gap: 8px;
     }
 `
 
 const Left = styled.div`
     display: flex;
     align-items: center;
-    gap: 24px;
-
-    @media (max-width: 500px) {
-        gap: 12px;
-    }
 `
 
 const Right = styled.div`
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
 
     @media (max-width: 500px) {
-        gap: 12px;
+        gap: 8px;
     }
 `
 
 const NavButton = styled.button`
-    cursor: pointer;
     background: none;
     border: none;
+    cursor: pointer;
     font-size: 16px;
     color: #333;
 
@@ -86,23 +86,6 @@ const NavButton = styled.button`
 
     @media (max-width: 500px) {
         font-size: 14px;
-    }
-`
-
-const LogoButton = styled.button`
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-
-    img {
-        width: 80px;
-
-        @media (max-width: 500px) {
-            width: 60px;
-        }
     }
 `
 
@@ -122,5 +105,21 @@ const LoginButton = styled.button`
     @media (max-width: 500px) {
         font-size: 14px;
         padding: 6px 10px;
+    }
+`
+
+const LogoButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+
+    img {
+        width: 80px;
+        height: auto;
+
+        @media (max-width: 500px) {
+            width: 60px;
+        }
     }
 `
