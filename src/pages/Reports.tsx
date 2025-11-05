@@ -84,7 +84,7 @@ export const Reports: React.FC = () => {
                     <ReportItem
                         key={r.id}
                         report={r}
-                        onClick={() => navigate(`/report/${r.id}`)} // ✅ 이동 로직
+                        onClick={() => navigate(`/report/${r.id}`)}
                     />
                 ))}
             </List>
@@ -134,7 +134,7 @@ const Title = styled.p`
 `
 
 const DropdownWrapper = styled.div`
-    width: 200px;
+    width: 240px;
 
     @media (max-width: 480px) {
         width: 100%;

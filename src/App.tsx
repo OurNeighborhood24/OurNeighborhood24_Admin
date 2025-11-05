@@ -1,7 +1,14 @@
 import React from "react"
 import "./styles/global.css"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Login, ReportDetail, Reports, Signup, Start } from "./pages"
+import {
+    Login,
+    Notifications,
+    ReportDetail,
+    Reports,
+    Signup,
+    Start,
+} from "./pages"
 import { Header } from "./components/common"
 
 function App() {
@@ -15,6 +22,7 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/reports" element={<Reports />} />
                 <Route path="/report/:id" element={<ReportDetail />} />
+                <Route path="/notifications" element={<Notifications />} />
             </Routes>
         </BrowserRouter>
     )

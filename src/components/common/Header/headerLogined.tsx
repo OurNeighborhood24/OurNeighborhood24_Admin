@@ -10,10 +10,10 @@ export function HeaderLogined() {
         <Container>
             <Wrapper>
                 <Left>
-                    <NavButton onClick={() => navigate("/report")}>
+                    <NavButton onClick={() => navigate("/reports")}>
                         신고 확인
                     </NavButton>
-                    <NavButton onClick={() => navigate("/notification")}>
+                    <NavButton onClick={() => navigate("/notifications")}>
                         공지
                     </NavButton>
                 </Left>
