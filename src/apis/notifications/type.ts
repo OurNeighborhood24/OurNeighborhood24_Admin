@@ -18,10 +18,15 @@ export interface NoticeList {
     items: NoticeItem[]
 }
 
-interface NoticeItem {
+export interface NoticeItem {
     notification_id: number
     writer_id: number
     title: string
     content: string
     created_at: string
+}
+
+export interface GetNotices {
+    offset: number
+    size: number
 }

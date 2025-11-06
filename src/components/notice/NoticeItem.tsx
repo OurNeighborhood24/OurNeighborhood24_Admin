@@ -4,7 +4,7 @@ import styled from "styled-components"
 export interface Notice {
     id: number
     title: string
-    date: string
+    created_at: string
 }
 
 interface Props {
@@ -15,11 +15,10 @@ interface Props {
 export const NoticeItem: React.FC<Props> = ({ notice, onClick }) => (
     <Item onClick={onClick}>
         <Title>{notice.title}</Title>
-        <Date>{notice.date}</Date>
+        <Date>{notice.created_at}</Date>
     </Item>
 )
 
-// ✅ styled-components
 const Item = styled.div`
     display: flex;
     justify-content: space-between;

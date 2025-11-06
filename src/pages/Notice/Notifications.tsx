@@ -1,24 +1,42 @@
-import { useState } from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import { NoticeItem, Notice } from "../../components/notice/NoticeItem"
 import { Pagination } from "../../components/common/Pagination"
 import { useNavigate } from "react-router-dom"
+import NotificationsService from "../../apis/notifications"
+import { NoticeItem as NoticeItemType } from "../../apis/notifications/type"
 
 export function Notifications() {
+    const [notices, setNotices] = useState<NoticeItemType[]>([])
+    const [total, setTotal] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const itemsPerPage = 15
 
-    // 더미 데이터
-    const dummy: Notice[] = Array.from({ length: 47 }, (_, i) => ({
-        id: i + 1,
-        title: "어짜피 텍스트 들어가면 되자나. 너 정말 으심되.",
-        date: "2025-11-05",
-    }))
+    const fetchNotices = async (page: number) => {
+        setLoading(true)
+        try {
+            const offset = (page - 1) * itemsPerPage
+            const response = await NotificationsService.getNotices({
+                offset,
+                size: itemsPerPage,
+            })
 
-    const totalPages = Math.ceil(dummy.length / itemsPerPage)
-    const startIndex = (currentPage - 1) * itemsPerPage
-    const paginated = dummy.slice(startIndex, startIndex + itemsPerPage)
+            setNotices(response.items)
+            setTotal(response.total)
+        } catch (err) {
+            console.error("공지사항 로드 실패:", err)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchNotices(currentPage)
+    }, [currentPage])
+
+    const totalPages = Math.ceil(total / itemsPerPage)
 
     return (
         <Container>
@@ -31,15 +49,25 @@ export function Notifications() {
 
             <Divider />
 
-            <List>
-                {paginated.map((n) => (
-                    <NoticeItem
-                        key={n.id}
-                        notice={n}
-                        onClick={() => navigate(`/notice/${n.id}`)}
-                    />
-                ))}
-            </List>
+            {loading ? (
+                <LoadingText>불러오는 중...</LoadingText>
+            ) : (
+                <List>
+                    {notices.map((n) => (
+                        <NoticeItem
+                            key={n.notification_id}
+                            notice={{
+                                id: n.notification_id,
+                                title: n.title,
+                                created_at: n.created_at.slice(0, 10),
+                            }}
+                            onClick={() =>
+                                navigate(`/notice/${n.notification_id}`)
+                            }
+                        />
+                    ))}
+                </List>
+            )}
 
             <Pagination
                 totalPages={totalPages}
@@ -116,4 +144,10 @@ const List = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+`
+
+const LoadingText = styled.p`
+    text-align: center;
+    color: #666;
+    margin-top: 30px;
 `

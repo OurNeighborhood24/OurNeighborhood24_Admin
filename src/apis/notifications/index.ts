@@ -1,6 +1,6 @@
 import { AxiosError } from "axios"
 import { instance } from ".."
-import { Notice, NoticeList, NoticeResponse } from "./type"
+import { GetNotices, Notice, NoticeList, NoticeResponse } from "./type"
 import { tempCookie } from "../../utils/tempCookie"
 
 export default class NotificationsService {
@@ -25,9 +25,11 @@ export default class NotificationsService {
         }
     }
 
-    static async getNotices(): Promise<NoticeList[]> {
+    static async getNotices({ offset, size }: GetNotices): Promise<NoticeList> {
         try {
-            const response = await instance.get<NoticeList[]>("/notifications")
+            const response = await instance.get<NoticeList>("/notifications", {
+                params: { offset, size },
+            })
             return response.data
         } catch (error) {
             throw new Error("데이터 조회에 실패했습니다")
