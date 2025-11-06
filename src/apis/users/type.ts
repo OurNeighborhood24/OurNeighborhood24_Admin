@@ -1,7 +1,7 @@
 export interface UserData extends RegionId {
-    username: string
+    id: string
     password: string
-    role: "ADMIN"
+    role: string
 }
 
 export interface UserResponse {

@@ -15,6 +15,8 @@ export function Header() {
                 tempCookie.clearTokens()
             }
         }
+
+        checkLogin()
     }, [])
 
     return <>{isLogin ? <HeaderLogined /> : <HeaderNotLogined />}</>

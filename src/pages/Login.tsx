@@ -1,19 +1,39 @@
 import styled from "styled-components"
 import { Input, Button, Text } from "../components/common"
 import { useForm } from "../hooks/useForm"
+import AuthService from "../apis/auth"
+import { useNavigate } from "react-router-dom"
 
 export function Login() {
+    const navigate = useNavigate()
     const { form, setForm, handleChange } = useForm<{
-        id: string
+        user_id: string
         password: string
     }>({
-        id: "",
+        user_id: "",
         password: "",
     })
 
-    const handleLogin = (e: React.FormEvent<HTMLButtonElement>) => {
+    const handleLogin = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        setForm({ id: "", password: "" })
+
+        if (form.user_id && form.password) {
+            if (form.user_id && form.password) {
+                const result = await AuthService.login({
+                    user_id: form.user_id,
+                    password: form.password,
+                })
+
+                if (result === 200) {
+                    alert("로그인이 완료되었습니다.")
+                    navigate("/reports")
+                } else {
+                    alert("로그인에 실패했습니다.")
+                }
+
+                setForm({ user_id: "", password: "" })
+            }
+        }
     }
 
     return (
@@ -29,9 +49,9 @@ export function Login() {
                     <Input
                         placeholder="아이디를 입력해 주세요"
                         label="아이디"
-                        name="id"
+                        name="user_id"
                         required
-                        value={form.id}
+                        value={form.user_id}
                         onChange={handleChange}
                     />
                     <Input

@@ -8,9 +8,9 @@ import { tempCookie } from "../utils/tempCookie"
 const BASEURL = process.env.BASE_URL
 
 const instance = axios.create({
-    baseURL: BASEURL,
+    baseURL: "http://192.168.12.105:8000",
     timeout: 10000,
-    withCredentials: true,
+    withCredentials: false,
 })
 
 instance.interceptors.request.use(

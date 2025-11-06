@@ -1,5 +1,5 @@
 export interface LoginData {
-    username: string
+    user_id: string
     password: string
 }
 

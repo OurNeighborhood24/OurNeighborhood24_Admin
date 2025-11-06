@@ -1,38 +1,61 @@
 import styled from "styled-components"
 import { Input, Button, Text, Dropdown } from "../components/common"
 import { useForm } from "../hooks/useForm"
+import UserService from "../apis/users"
+import { useEffect, useState } from "react"
+import { Region } from "../apis/users/type"
 
 export function Signup() {
     const { form, setForm, handleChange } = useForm<{
         id: string
         password: string
-        region: string
-    }>({ id: "", password: "", region: "" })
+        region_name: string
+    }>({ id: "", password: "", region_name: "" })
 
-    const handleSignup = (e: React.FormEvent<HTMLButtonElement>) => {
+    const [regions, setRegions] = useState<Region[]>([])
+
+    useEffect(() => {
+        const fetchRegions = async () => {
+            try {
+                const data = await UserService.getRegions()
+                setRegions(data)
+                console.log(data)
+            } catch (err) {
+                console.error("지역 정보 불러오기 실패:", err)
+            }
+        }
+        fetchRegions()
+    }, [])
+
+    const handleSignup = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        setForm({ id: "", password: "", region: "" })
-    }
 
-    const regions = [
-        "서울특별시",
-        "부산광역시",
-        "대구광역시",
-        "인천광역시",
-        "광주광역시",
-        "대전광역시",
-        "울산광역시",
-        "세종특별자치시",
-        "경기도",
-        "강원특별자치도",
-        "충청북도",
-        "충청남도",
-        "전북특별자치도",
-        "전라남도",
-        "경상북도",
-        "경상남도",
-        "제주특별자치도",
-    ]
+        const selectedRegion = regions.find(
+            (r) => r.region_name === form.region_name
+        )
+
+        if (!selectedRegion) {
+            alert("지역을 선택해 주세요.")
+            return
+        }
+
+        if (form.id && form.password) {
+            const result = await UserService.register({
+                id: form.id,
+                password: form.password,
+                role: "ADMIN",
+                region_id: selectedRegion.region_id,
+            })
+
+            if (result === 201) {
+                alert("회원가입이 완료되었습니다.")
+            } else {
+                alert("회원가입에 실패했습니다.")
+            }
+
+            setForm({ id: "", password: "", region_name: "" })
+        }
+    }
 
     return (
         <Main>
@@ -46,12 +69,13 @@ export function Signup() {
                 <InputBox>
                     <Dropdown
                         label="지역정보"
-                        options={regions}
-                        value={form.region}
+                        options={regions.map((r) => r.region_name)}
+                        value={form.region_name}
                         onChange={(value) =>
-                            setForm({ ...form, region: value })
+                            setForm({ ...form, region_name: value })
                         }
                     />
+
                     <Input
                         placeholder="아이디를 입력해 주세요"
                         label="아이디"
