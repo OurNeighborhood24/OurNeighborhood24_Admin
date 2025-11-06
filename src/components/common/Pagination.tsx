@@ -39,7 +39,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             {pages.map((p) => (
                 <PageButton
                     key={p}
-                    active={p === currentPage}
+                    $active={p === currentPage}
                     onClick={() => onPageChange(p)}
                 >
                     {p}
@@ -69,14 +69,14 @@ const PaginationWrapper = styled.div`
     }
 `
 
-const PageButton = styled.button<{ active?: boolean }>`
+const PageButton = styled.button<{ $active?: boolean }>`
     width: 32px;
     height: 32px;
     border-radius: 6px;
     border: none;
     cursor: pointer;
-    background: ${({ active }) => (active ? "#1860f0" : "transparent")};
-    color: ${({ active }) => (active ? "#fff" : "#333")};
+    background: ${({ $active }) => ($active ? "#1860f0" : "transparent")};
+    color: ${({ $active }) => ($active ? "#fff" : "#333")};
     font-weight: 500;
     transition: all 0.2s;
 
