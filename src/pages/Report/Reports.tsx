@@ -95,7 +95,7 @@ export const Reports: React.FC = () => {
                                         ? "미확인"
                                         : r.state == "CHECKED"
                                         ? "확인"
-                                        : r.state == "PROCCESSING"
+                                        : r.state == "PROCESSING"
                                         ? "처리중"
                                         : "처리완료",
                             }}

@@ -9,9 +9,14 @@ import {
     CommentResponse,
 } from "../../apis/reports/type"
 
-type StatusType = "PENDING" | "CHECK" | "PROCCESING" | "COMPLETE"
+type StatusType = "PENDING" | "CHECKED" | "PROCESSING" | "COMPLETED"
 
-const statusOrder: StatusType[] = ["PENDING", "CHECK", "PROCCESING", "COMPLETE"]
+const statusOrder: StatusType[] = [
+    "PENDING",
+    "CHECKED",
+    "PROCESSING",
+    "COMPLETED",
+]
 
 export const ReportDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>()
@@ -148,18 +153,24 @@ export const ReportDetail: React.FC = () => {
 
     const handleStatusChange = async () => {
         if (!report) return
-        const currentIndex = statusOrder.indexOf(status)
-        const nextStatus = statusOrder[currentIndex + 1] ?? "처리완료"
 
+        let nextStatus: StatusType | null = null
+
+        if (status === "PENDING") nextStatus = "CHECKED"
+        else if (status === "CHECKED") nextStatus = "PROCESSING"
+        else if (status === "PROCESSING") nextStatus = "COMPLETED"
+        else nextStatus = null
+
+        if (!nextStatus) return
         try {
-            const code = await ReportsService.patchState(report.report_id, {
+            const result = await ReportsService.patchState(report.report_id, {
                 state: nextStatus,
             })
-            if (code >= 200 && code < 300) {
+            if (result == 200) {
                 setStatus(nextStatus)
                 setReport({ ...report, state: nextStatus })
             } else {
-                alert("상태 변경 실패: 서버 응답 " + code)
+                alert("상태 변경 실패: 서버 응답 " + result)
             }
         } catch (err) {
             console.error(err)
@@ -236,13 +247,13 @@ export const ReportDetail: React.FC = () => {
                     <StatusButton
                         $status={status}
                         onClick={handleStatusChange}
-                        disabled={status === "COMPLETE"}
+                        disabled={status === "COMPLETED"}
                     >
                         {status === "PENDING"
                             ? "확인하기"
-                            : status === "CHECK"
-                            ? "처리 중"
-                            : status === "PROCCESING"
+                            : status === "CHECKED"
+                            ? "처리 시작"
+                            : status === "PROCESSING"
                             ? "처리 완료"
                             : "처리 완료"}
                     </StatusButton>
@@ -263,9 +274,9 @@ export const ReportDetail: React.FC = () => {
                                 현재 상태:{" "}
                                 {status == "PENDING"
                                     ? "미확인"
-                                    : status == "CHECK"
+                                    : status == "CHECKED"
                                     ? "확인"
-                                    : status == "PROCCESING"
+                                    : status == "PROCESSING"
                                     ? "처리중"
                                     : "처리완료"}
                             </SmallNote>
@@ -396,11 +407,11 @@ const ButtonWrapper = styled.div`
 
 const StatusButton = styled.button<{ $status: string }>`
     background-color: ${({ $status }) =>
-        $status === "미확인"
+        $status === "PENDING"
             ? "#1860f0"
-            : $status === "확인"
+            : $status === "CHECK"
             ? "#f0a318"
-            : $status === "처리중"
+            : $status === "PROCCESING"
             ? "#28a745"
             : "#999"};
     color: white;
@@ -409,11 +420,13 @@ const StatusButton = styled.button<{ $status: string }>`
     padding: 10px 22px;
     font-size: 15px;
     font-weight: 500;
-    cursor: pointer;
+    cursor: ${({ $status }) =>
+        $status === "COMPLETE" ? "default" : "pointer"};
+    transition: background 0.2s ease;
 
     &:disabled {
         opacity: 0.7;
-        cursor: not-allowed;
+        cursor: default;
     }
 `
 

@@ -18,10 +18,7 @@ export interface GetReports {
 export interface ReportItem {
     report_id: number
     writer_id: number
-    category: {
-        category_id: number
-        category_name: string
-    }
+    category: Category
     latitude: number
     longitude: number
     title: string
@@ -32,7 +29,7 @@ export interface ReportItem {
 }
 
 export interface State {
-    state: string
+    state: "PENDING" | "CHECKED" | "PROCESSING" | "COMPLETED"
 }
 
 export interface CommentPayload {
