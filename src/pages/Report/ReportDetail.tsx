@@ -298,7 +298,15 @@ export const ReportDetail: React.FC = () => {
                                     <CommentDate>
                                         {c.created_at.slice(0, 10)}
                                     </CommentDate>
-                                    <CommentState>{c.state}</CommentState>
+                                    <CommentState>
+                                        {c.state == "PENDING"
+                                            ? "미확인"
+                                            : c.state == "CHECKED"
+                                            ? "확인"
+                                            : c.state == "PROCESSING"
+                                            ? "처리중"
+                                            : "처리완료"}
+                                    </CommentState>
                                 </CommentMeta>
                                 <CommentBody>{c.answer}</CommentBody>
                             </CommentCard>
