@@ -2,6 +2,7 @@ import styled from "styled-components"
 import Logo from "../../../assets/Img/Logo.png"
 import { useNavigate } from "react-router-dom"
 import AuthService from "../../../apis/auth"
+import { tempCookie } from "../../../utils/tempCookie"
 
 export function HeaderLogined() {
     const navigate = useNavigate()
@@ -11,12 +12,17 @@ export function HeaderLogined() {
             const result = await AuthService.logout()
             if (result == 200) {
                 alert("로그아웃 되었습니다")
+                tempCookie.clearTokens()
                 navigate("/")
             } else {
                 alert("로그아웃 실패")
+                tempCookie.clearTokens()
+                navigate("/")
             }
         } catch (e) {
             console.error("로그아웃 실패:", e)
+            tempCookie.clearTokens()
+            navigate("/")
         }
     }
 

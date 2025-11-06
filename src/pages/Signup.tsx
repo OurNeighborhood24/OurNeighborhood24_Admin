@@ -41,21 +41,27 @@ export function Signup() {
             return
         }
 
-        if (form.id && form.password) {
-            const result = await UserService.register({
-                id: form.id,
-                password: form.password,
-                role: "ADMIN",
-                region_id: selectedRegion.region_id,
-            })
+        if (form.id && form.password && form.region_name) {
+            if (form.password.length >= 8 && form.password.length <= 30) {
+                const result = await UserService.register({
+                    id: form.id,
+                    password: form.password,
+                    role: "ADMIN",
+                    region_id: selectedRegion.region_id,
+                })
 
-            if (result === 201) {
-                navigate("/login")
+                if (result === 201) {
+                    navigate("/login")
+                } else {
+                    alert("회원가입에 실패했습니다.")
+                }
+
+                setForm({ id: "", password: "", region_name: "" })
             } else {
-                alert("회원가입에 실패했습니다.")
+                alert("비밀번호는 8자 이상, 30자 이하로 작성해주세요.")
             }
-
-            setForm({ id: "", password: "", region_name: "" })
+        } else {
+            alert("아이디와 비밀번호, 지역이름 모두 입력해주세요.")
         }
     }
 
@@ -87,7 +93,7 @@ export function Signup() {
                         onChange={handleChange}
                     />
                     <Input
-                        placeholder="비밀번호를 입력해 주세요"
+                        placeholder="비밀번호를 입력해 주세요 (8자 이상, 30자 이하)"
                         label="비밀번호"
                         name="password"
                         required

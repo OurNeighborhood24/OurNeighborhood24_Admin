@@ -18,20 +18,26 @@ export function Login() {
         e.preventDefault()
 
         if (form.user_id && form.password) {
-            if (form.user_id && form.password) {
-                const result = await AuthService.login({
-                    user_id: form.user_id,
-                    password: form.password,
-                })
+            if (form.password.length >= 8 && form.password.length <= 30) {
+                if (form.user_id && form.password) {
+                    const result = await AuthService.login({
+                        user_id: form.user_id,
+                        password: form.password,
+                    })
 
-                if (result === 200) {
-                    navigate("/reports")
-                } else {
-                    alert("로그인에 실패했습니다.")
+                    if (result === 200) {
+                        navigate("/reports")
+                    } else {
+                        alert("로그인에 실패했습니다.")
+                    }
+
+                    setForm({ user_id: "", password: "" })
                 }
-
-                setForm({ user_id: "", password: "" })
+            } else {
+                alert("비밀번호는 8자 이상, 30자 이하로 작성해주세요")
             }
+        } else {
+            alert("아이디와 비밀번호 모두 입력해주세요.")
         }
     }
 
@@ -54,7 +60,7 @@ export function Login() {
                         onChange={handleChange}
                     />
                     <Input
-                        placeholder="비밀번호를 입력해 주세요"
+                        placeholder="비밀번호를 입력해 주세요 (8자 이상, 30자 이하)"
                         label="비밀번호"
                         name="password"
                         required
