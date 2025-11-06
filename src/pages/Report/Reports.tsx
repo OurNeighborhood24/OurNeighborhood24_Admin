@@ -100,7 +100,7 @@ export const Reports: React.FC = () => {
 
 const Container = styled.div`
     width: 100%;
-    max-width: 900px;
+    max-width: 1200px;
     margin: 100px auto;
     display: flex;
     flex-direction: column;

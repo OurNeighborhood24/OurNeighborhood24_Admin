@@ -97,6 +97,7 @@ const TextArea = styled.textarea`
     background-color: ${colors.Gray50};
     color: ${colors.Gray800};
     box-sizing: border-box;
+    resize: none;
 
     &::placeholder {
         color: ${colors.Gray500};

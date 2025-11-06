@@ -50,9 +50,8 @@ export function Notifications() {
     )
 }
 
-// ✅ styled-components
 const Container = styled.div`
-    max-width: 900px;
+    max-width: 1200px;
     width: 100%;
     margin: 100px auto;
     display: flex;
