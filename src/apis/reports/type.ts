@@ -35,7 +35,7 @@ export interface State {
     state: string
 }
 
-export interface Comment {
+export interface CommentPayload {
     answer: string
 }
 
@@ -49,6 +49,29 @@ export interface CommentResponse {
 }
 
 export interface CommentedReport {
-    report: ReportItem
-    answer: CommentResponse
+    report: {
+        report_id: number
+        writer_id: number
+        category: {
+            category_id: number
+            category_name: string
+        }
+        latitude: number
+        longitude: number
+        title: string
+        description: string
+        image_url: string
+        state: string
+        created_at: string
+    }
+    answers: Answer[] | null
+}
+
+export interface Answer {
+    report_answer_id: number
+    report_id: number
+    writer_id: number
+    answer: string
+    state: string
+    created_at: string
 }

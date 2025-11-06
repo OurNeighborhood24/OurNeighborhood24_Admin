@@ -29,7 +29,7 @@ export function NoticeWrite() {
         try {
             const result = await NotificationsService.postNotice({
                 title: form.title,
-                content: form.content,
+                content: form.content.replace(/\n/g, "\\n"),
             })
 
             if (result === 201) {
