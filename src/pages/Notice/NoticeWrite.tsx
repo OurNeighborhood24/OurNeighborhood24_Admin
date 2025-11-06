@@ -27,25 +27,27 @@ export function NoticeWrite() {
 
         setLoading(true)
         try {
-            await NotificationsService.postNotice({
+            const result = await NotificationsService.postNotice({
                 title: form.title,
                 content: form.content,
             })
-            alert("공지사항이 등록되었습니다.")
-            navigate("/notices")
-            setForm({
-                title: "",
-                content: "",
-            })
+
+            if (result === 201) {
+                alert("공지사항이 등록되었습니다.")
+                navigate("/notices")
+                setForm({
+                    title: "",
+                    content: "",
+                })
+            } else {
+                alert("공지 등록에 실패했습니다.")
+            }
         } catch (err) {
             console.error("공지 등록 실패:", err)
             alert("공지 등록에 실패했습니다.")
         } finally {
             setLoading(false)
         }
-
-        console.log("공지 등록:", { form })
-        alert("공지사항이 등록되었습니다.")
     }
 
     return (

@@ -27,6 +27,7 @@ const Item = styled.div`
     border-bottom: 1px solid #f2f2f2;
     cursor: pointer;
     transition: background 0.15s ease;
+    width: 100%;
 
     &:hover {
         background-color: #fafafa;
@@ -46,16 +47,20 @@ const Title = styled.p`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex: 1;
+    max-width: calc(100% - 100px);
 
     @media (max-width: 768px) {
         white-space: normal;
         font-size: 14px;
+        max-width: 100%;
     }
 `
 
 const Date = styled.p`
     font-size: 13px;
     color: #888;
+    flex-shrink: 0;
 
     @media (max-width: 768px) {
         font-size: 12px;
