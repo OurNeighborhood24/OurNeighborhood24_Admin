@@ -5,6 +5,7 @@ import { colors } from "../../styles/colors"
 import { useEffect, useState } from "react"
 import NotificationsService from "../../apis/notifications"
 import { NoticeItem } from "../../apis/notifications/type"
+import { MdEdit, MdDelete } from "react-icons/md" // react-icons 사용
 
 export function NoticeDetail() {
     const { id } = useParams<{ id: string }>()
@@ -13,6 +14,8 @@ export function NoticeDetail() {
     const [notice, setNotice] = useState<NoticeItem | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [isEditing, setIsEditing] = useState(false)
+    const [editForm, setEditForm] = useState({ title: "", content: "" })
 
     useEffect(() => {
         const fetchNotice = async () => {
@@ -31,6 +34,10 @@ export function NoticeDetail() {
                     setError("해당 공지를 찾을 수 없습니다.")
                 } else {
                     setNotice(found)
+                    setEditForm({
+                        title: found.title,
+                        content: found.content.replace(/\\n/g, "\n"),
+                    })
                 }
             } catch (err: any) {
                 setError("공지사항을 불러오는 데 실패했습니다.")
@@ -42,7 +49,58 @@ export function NoticeDetail() {
         fetchNotice()
     }, [id])
 
-    const formatted = notice?.content.replace(/\\n/g, "\n").replace(/\r/g, "")
+    const handleEdit = async () => {
+        if (!notice) return
+        if (!editForm.title.trim() || !editForm.content.trim()) {
+            alert("제목과 내용을 모두 입력해주세요.")
+            return
+        }
+
+        try {
+            const result = await NotificationsService.editNotice(
+                notice.notification_id,
+                {
+                    title: editForm.title,
+                    content: editForm.content.replace(/\n/g, "\\n"),
+                }
+            )
+            if (result === 200) {
+                alert("공지사항이 수정되었습니다.")
+                setNotice({
+                    ...notice,
+                    title: editForm.title,
+                    content: editForm.content,
+                })
+                setIsEditing(false)
+            } else {
+                alert("공지 수정에 실패했습니다.")
+            }
+        } catch (err) {
+            console.error(err)
+            alert("공지 수정 중 오류가 발생했습니다.")
+        }
+    }
+
+    const handleDelete = async () => {
+        if (!notice) return
+        const confirmDelete = window.confirm("정말 이 공지를 삭제하시겠습니까?")
+        if (!confirmDelete) return
+
+        try {
+            const result = await NotificationsService.deleteNotice(
+                notice.notification_id
+            )
+            if (result === 204) {
+                alert("공지사항이 삭제되었습니다.")
+                navigate("/notices")
+            } else {
+                alert("공지 삭제에 실패했습니다.")
+            }
+        } catch (err) {
+            console.error(err)
+            alert("공지 삭제 중 오류가 발생했습니다.")
+        }
+    }
 
     if (loading) {
         return (
@@ -78,9 +136,34 @@ export function NoticeDetail() {
 
     return (
         <Container>
-            <TitleText as={"div"} font="TitleMedium" color="Black">
-                {notice.title}
-            </TitleText>
+            <Header>
+                {isEditing ? (
+                    <EditTitleInput
+                        value={editForm.title}
+                        onChange={(e) =>
+                            setEditForm({ ...editForm, title: e.target.value })
+                        }
+                    />
+                ) : (
+                    <TitleText as={"div"} font="TitleMedium" color="Black">
+                        {notice.title}
+                    </TitleText>
+                )}
+                <IconBox>
+                    <MdEdit
+                        size={24}
+                        color={colors.Gray600}
+                        onClick={() => setIsEditing((prev) => !prev)}
+                        style={{ cursor: "pointer" }}
+                    />
+                    <MdDelete
+                        size={24}
+                        color={colors.CriticalMain}
+                        onClick={handleDelete}
+                        style={{ cursor: "pointer" }}
+                    />
+                </IconBox>
+            </Header>
 
             <DateText font="BodySmall" color="Gray600">
                 {new Date(notice.created_at).toLocaleDateString("ko-KR")}
@@ -88,14 +171,37 @@ export function NoticeDetail() {
 
             <Divider />
 
-            <Content font="BodyMedium" color="Black">
-                {formatted?.split("\n").map((line, idx, arr) => (
-                    <span key={idx}>
-                        {line}
-                        {idx < arr.length - 1 && <br />}
-                    </span>
-                ))}
-            </Content>
+            {isEditing ? (
+                <>
+                    <EditTextArea
+                        value={editForm.content}
+                        onChange={(e) =>
+                            setEditForm({
+                                ...editForm,
+                                content: e.target.value,
+                            })
+                        }
+                    />
+                    <EditButtonBox>
+                        <Button onClick={handleEdit}>저장</Button>
+                        <CancelButton onClick={() => setIsEditing(false)}>
+                            취소
+                        </CancelButton>
+                    </EditButtonBox>
+                </>
+            ) : (
+                <Content font="BodyMedium" color="Black">
+                    {notice.content
+                        .replace(/\\n/g, "\n")
+                        .split("\n")
+                        .map((line, idx, arr) => (
+                            <span key={idx}>
+                                {line}
+                                {idx < arr.length - 1 && <br />}
+                            </span>
+                        ))}
+                </Content>
+            )}
         </Container>
     )
 }
@@ -109,11 +215,18 @@ const Container = styled.div`
     gap: 20px;
     padding: 0 16px;
     box-sizing: border-box;
+`
 
-    @media (max-width: 768px) {
-        margin: 70px auto;
-        padding: 0 12px;
-    }
+const Header = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+`
+
+const IconBox = styled.div`
+    display: flex;
+    gap: 12px;
 `
 
 const DateText = styled(Text)`
@@ -131,6 +244,50 @@ const Content = styled(Text)`
     line-height: 1.8;
 `
 
+const EditTextArea = styled.textarea`
+    width: 100%;
+    min-height: 300px;
+    resize: vertical;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 16px;
+    border: 1px solid ${colors.Gray200};
+    border-radius: 12px;
+    background-color: ${colors.Gray50};
+    color: ${colors.Gray800};
+    box-sizing: border-box;
+`
+
+const EditTitleInput = styled.input`
+    width: 100%;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border: 1px solid ${colors.Gray200};
+    border-radius: 8px;
+`
+
+const EditButtonBox = styled.div`
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+`
+
+const Button = styled.button`
+    background-color: ${colors.Blue500};
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+`
+
+const CancelButton = styled(Button)`
+    background-color: ${colors.Gray300};
+    color: ${colors.Gray800};
+`
+
 const BackButton = styled.button`
     margin-top: 40px;
     align-self: flex-end;
@@ -142,7 +299,6 @@ const BackButton = styled.button`
     font-size: 14px;
     cursor: pointer;
     transition: 0.2s ease;
-
     &:hover {
         background-color: ${colors.Gray200};
     }

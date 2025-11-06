@@ -43,7 +43,7 @@ export default class NotificationsService {
         try {
             const accessToken = tempCookie.getAccessToken()
 
-            const response = await instance.post<NoticeResponse>(
+            const response = await instance.patch<NoticeResponse>(
                 `/notifications/${notification_id}`,
                 data,
                 {
