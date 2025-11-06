@@ -9,9 +9,9 @@ import {
     CommentResponse,
 } from "../../apis/reports/type"
 
-type StatusType = "미확인" | "확인" | "처리중" | "처리완료"
+type StatusType = "PENDING" | "CHECK" | "PROCCESING" | "COMPLETE"
 
-const statusOrder: StatusType[] = ["미확인", "확인", "처리중", "처리완료"]
+const statusOrder: StatusType[] = ["PENDING", "CHECK", "PROCCESING", "COMPLETE"]
 
 export const ReportDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>()
@@ -21,7 +21,7 @@ export const ReportDetail: React.FC = () => {
     const [report, setReport] = useState<ApiReportItem | null>(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const [status, setStatus] = useState<StatusType>("미확인")
+    const [status, setStatus] = useState<StatusType>("PENDING")
     const [comments, setComments] = useState<CommentResponse[]>([])
     const [commentText, setCommentText] = useState("")
     const [commentSubmitting, setCommentSubmitting] = useState(false)
@@ -70,7 +70,7 @@ export const ReportDetail: React.FC = () => {
                         if (cancelled) return
                         setReport(found)
                         const s = found.state as StatusType
-                        setStatus(statusOrder.includes(s) ? s : "미확인")
+                        setStatus(statusOrder.includes(s) ? s : "PENDING")
                         break
                     }
                 }
@@ -236,13 +236,13 @@ export const ReportDetail: React.FC = () => {
                     <StatusButton
                         $status={status}
                         onClick={handleStatusChange}
-                        disabled={status === "처리완료"}
+                        disabled={status === "COMPLETE"}
                     >
-                        {status === "미확인"
+                        {status === "PENDING"
                             ? "확인하기"
-                            : status === "확인"
+                            : status === "CHECK"
                             ? "처리 중"
-                            : status === "처리중"
+                            : status === "PROCCESING"
                             ? "처리 완료"
                             : "처리 완료"}
                     </StatusButton>
@@ -259,7 +259,16 @@ export const ReportDetail: React.FC = () => {
                             onChange={(e) => setCommentText(e.target.value)}
                         />
                         <CommentActions>
-                            <SmallNote>현재 상태: {status}</SmallNote>
+                            <SmallNote>
+                                현재 상태:{" "}
+                                {status == "PENDING"
+                                    ? "미확인"
+                                    : status == "CHECK"
+                                    ? "확인"
+                                    : status == "PROCCESING"
+                                    ? "처리중"
+                                    : "처리완료"}
+                            </SmallNote>
                             <CommentButton
                                 onClick={handleCommentSubmit}
                                 disabled={

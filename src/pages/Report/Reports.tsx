@@ -90,7 +90,14 @@ export const Reports: React.FC = () => {
                                 title: r.title,
                                 date: r.created_at.slice(0, 10),
                                 category: r.category.category_name,
-                                status: r.state,
+                                status:
+                                    r.state == "PENDING"
+                                        ? "미확인"
+                                        : r.state == "CHECKED"
+                                        ? "확인"
+                                        : r.state == "PROCCESSING"
+                                        ? "처리중"
+                                        : "처리완료",
                             }}
                             onClick={() => navigate(`/report/${r.report_id}`)}
                         />
