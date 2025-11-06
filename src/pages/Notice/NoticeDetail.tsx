@@ -65,7 +65,6 @@ export function NoticeDetail() {
                 }
             )
             if (result === 200) {
-                alert("공지사항이 수정되었습니다.")
                 setNotice({
                     ...notice,
                     title: editForm.title,
@@ -91,7 +90,6 @@ export function NoticeDetail() {
                 notice.notification_id
             )
             if (result === 204) {
-                alert("공지사항이 삭제되었습니다.")
                 navigate("/notices")
             } else {
                 alert("공지 삭제에 실패했습니다.")

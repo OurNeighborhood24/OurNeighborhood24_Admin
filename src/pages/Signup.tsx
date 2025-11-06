@@ -4,6 +4,7 @@ import { useForm } from "../hooks/useForm"
 import UserService from "../apis/users"
 import { useEffect, useState } from "react"
 import { Region } from "../apis/users/type"
+import { useNavigate } from "react-router-dom"
 
 export function Signup() {
     const { form, setForm, handleChange } = useForm<{
@@ -11,6 +12,7 @@ export function Signup() {
         password: string
         region_name: string
     }>({ id: "", password: "", region_name: "" })
+    const navigate = useNavigate()
 
     const [regions, setRegions] = useState<Region[]>([])
 
@@ -48,7 +50,7 @@ export function Signup() {
             })
 
             if (result === 201) {
-                alert("회원가입이 완료되었습니다.")
+                navigate("/login")
             } else {
                 alert("회원가입에 실패했습니다.")
             }

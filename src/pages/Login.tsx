@@ -25,7 +25,6 @@ export function Login() {
                 })
 
                 if (result === 200) {
-                    alert("로그인이 완료되었습니다.")
                     navigate("/reports")
                 } else {
                     alert("로그인에 실패했습니다.")

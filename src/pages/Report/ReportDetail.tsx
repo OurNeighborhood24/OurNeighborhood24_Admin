@@ -3,7 +3,6 @@ import styled from "styled-components"
 import { useParams, useNavigate } from "react-router-dom"
 import ReportsService from "../../apis/reports"
 import {
-    Answer,
     ReportItem as ApiReportItem,
     CommentedReport,
     CommentResponse,
@@ -32,7 +31,6 @@ export const ReportDetail: React.FC = () => {
     const [commentSubmitting, setCommentSubmitting] = useState(false)
 
     useEffect(() => {
-        console.log("✅ useEffect 실행됨, reportId:", reportId)
         let cancelled = false
 
         if (!reportId) return
@@ -117,7 +115,6 @@ export const ReportDetail: React.FC = () => {
 
     const fetchAnswers = async () => {
         try {
-            console.log("📢 fetchAnswers 호출됨")
             const commentedReports: CommentedReport[] =
                 await ReportsService.getCommentedReports()
 
@@ -170,11 +167,10 @@ export const ReportDetail: React.FC = () => {
                 setStatus(nextStatus)
                 setReport({ ...report, state: nextStatus })
             } else {
-                alert("상태 변경 실패: 서버 응답 " + result)
+                console.error("상태 변경 실패: 서버 응답 " + result)
             }
         } catch (err) {
             console.error(err)
-            alert("상태 변경 중 오류가 발생했습니다.")
         }
     }
 

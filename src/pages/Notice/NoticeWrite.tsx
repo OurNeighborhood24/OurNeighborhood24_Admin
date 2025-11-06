@@ -33,7 +33,6 @@ export function NoticeWrite() {
             })
 
             if (result === 201) {
-                alert("공지사항이 등록되었습니다.")
                 navigate("/notices")
                 setForm({
                     title: "",
