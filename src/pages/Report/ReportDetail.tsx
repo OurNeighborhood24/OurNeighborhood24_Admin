@@ -57,10 +57,10 @@ export const ReportDetail: React.FC = () => {
                         {status === "미확인"
                             ? "확인하기"
                             : status === "확인"
-                            ? "처리 시작"
+                            ? "처리 중"
                             : status === "처리중"
                             ? "처리 완료"
-                            : "처리 완료됨"}
+                            : "처리 완료"}
                     </StatusButton>
                 </ButtonWrapper>
             </Container>
@@ -70,7 +70,7 @@ export const ReportDetail: React.FC = () => {
 
 const PageWrapper = styled.div`
     width: 100%;
-    overflow-x: hidden; /* ✅ 가로 스크롤 방지 */
+    overflow-x: hidden;
 `
 
 const Container = styled.div`

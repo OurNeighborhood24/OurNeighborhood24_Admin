@@ -56,7 +56,6 @@ export function NoticeWrite() {
     )
 }
 
-// ✅ 스타일 정의
 const Wrapper = styled.div`
     display: flex;
     justify-content: center;
