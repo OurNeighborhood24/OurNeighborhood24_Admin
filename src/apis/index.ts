@@ -5,10 +5,10 @@ import axios, {
 } from "axios"
 import { tempCookie } from "../utils/tempCookie"
 
-const BASEURL = process.env.BASE_URL
+const BASEURL = process.env.REACT_APP_BASE_URL
 
 const instance = axios.create({
-    baseURL: "http://192.168.12.105:8000",
+    baseURL: BASEURL,
     timeout: 10000,
     withCredentials: false,
 })
