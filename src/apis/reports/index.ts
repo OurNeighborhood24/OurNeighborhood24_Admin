@@ -6,6 +6,7 @@ import {
     ReportItem,
     State,
     CommentResponse,
+    GetReports,
 } from "./type"
 import { tempCookie } from "../../utils/tempCookie"
 
@@ -21,9 +22,14 @@ export default class ReportsService {
         }
     }
 
-    static async getReport(): Promise<ReportResponse[]> {
+    static async getReport({
+        offset,
+        size,
+    }: GetReports): Promise<ReportResponse> {
         try {
-            const response = await instance.get<ReportResponse[]>("/reports")
+            const response = await instance.get<ReportResponse>("/reports", {
+                params: { offset, size },
+            })
             return response.data
         } catch (error) {
             throw new Error("신고 내역 가져오기 실패")

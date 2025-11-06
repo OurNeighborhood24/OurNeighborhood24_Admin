@@ -10,6 +10,11 @@ export interface ReportResponse {
     items: ReportItem[]
 }
 
+export interface GetReports {
+    offset: number
+    size: number
+}
+
 export interface ReportItem {
     report_id: number
     writer_id: number
