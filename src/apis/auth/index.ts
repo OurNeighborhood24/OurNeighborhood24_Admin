@@ -25,7 +25,13 @@ export default class AuthService {
 
     static async logout(): Promise<number> {
         try {
-            const response = await instance.delete("/auth/logout")
+            const accessToken = tempCookie.getAccessToken()
+
+            const response = await instance.delete("/auth/logout", {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            })
             tempCookie.clearTokens()
             return response.status
         } catch (error) {

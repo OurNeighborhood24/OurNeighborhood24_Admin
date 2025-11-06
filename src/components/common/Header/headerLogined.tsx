@@ -1,9 +1,24 @@
 import styled from "styled-components"
 import Logo from "../../../assets/Img/Logo.png"
 import { useNavigate } from "react-router-dom"
+import AuthService from "../../../apis/auth"
 
 export function HeaderLogined() {
     const navigate = useNavigate()
+
+    const logoutHandler = async () => {
+        try {
+            const result = await AuthService.logout()
+            if (result == 200) {
+                alert("로그아웃 되었습니다")
+                navigate("/")
+            } else {
+                alert("로그아웃 실패")
+            }
+        } catch (e) {
+            console.error("로그아웃 실패:", e)
+        }
+    }
 
     return (
         <Container>
@@ -17,6 +32,7 @@ export function HeaderLogined() {
                     </NavButton>
                 </Left>
                 <Right>
+                    <NavButton onClick={logoutHandler}>로그아웃</NavButton>
                     <LogoButton>
                         <img src={Logo} alt="로고" />
                     </LogoButton>
@@ -70,6 +86,7 @@ const Left = styled.div`
 const Right = styled.div`
     display: flex;
     align-items: center;
+    gap: 24px;
 `
 
 const NavButton = styled.button`
